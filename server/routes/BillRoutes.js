@@ -7,7 +7,6 @@ const Product = require("../models/products.js");
 
 const router = express.Router();
 
-// Save a bill transaction
 router.post("/save-bill", ensureAuthenticated, async (req, res) => {
   try {
     const product = await Product.findOne({ name: req.body.productName });
@@ -30,32 +29,49 @@ router.post("/save-bill", ensureAuthenticated, async (req, res) => {
   }
 });
 
-// // In your backend routes
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const product = await Product.findById(req.params.id);
-//     if (!product) {
-//       return res.status(404).json({ message: "Product not found" });
-//     }
+router.post("/:id", ensureAuthenticated, async (req, res) => {
+  console.log(req.body);
 
-//     if (product) {
-//       if (product.availableStock < req.body.quantity) {
-//         return res.status(400).json({ message: "Insufficient stock" });
-//       }
-//       product.availableStock -= req.body.quantity;
-//       await product.save();
-//     } else {
-//       return res.status(404).json({ message: "Product not found" });
-//     }
+  const { quantity, paymentMethod, time } = req.body;
+  if (!quantity || !paymentMethod) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
 
-//     const bill = new Bill(req.body);
-//     await bill.save();
+  try {
+    const product = await Product.findOne({ product_id: req.params.id });
+    console.log(product);
 
-//     res.status(201).json({ message: "Bill saved successfully", bill });
-//   } catch (error) {
-//     res.status(500).json({ error: error.message });
-//   }
-// });
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    if (product) {
+      if (product.availableStock < quantity) {
+        return res.status(400).json({ message: "Insufficient stock" });
+      }
+      product.availableStock -= req.body.quantity;
+      res.status(201).json({ message: "Bill saved successfully", bill });
+    } else {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const newBillItem = {
+      productName: product.name,
+      quantity: quantity,
+      price: product.sellingPrice,
+      total: product.sellingPrice * quantity,
+      time: time,
+      paymentMode: paymentMethod,
+    };
+
+    const bill = new Bill(newBillItem);
+    await bill.save();
+
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 router.get("/get-bills", ensureAuthenticated, async (req, res) => {
   try {

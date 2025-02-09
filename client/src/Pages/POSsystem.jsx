@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Plus, ChevronLeft, ChevronRight, QrCode, X } from "lucide-react";
 import BillingStatistical from "../components/BillingStatistical";
-import { handleError } from "../utils";
+import { handleError, handleSuccess } from "../utils";
 import { Html5QrcodeScanner } from "html5-qrcode";
 
 const POSSystem = () => {
@@ -21,16 +21,24 @@ const POSSystem = () => {
   const [fetchedBills, setFetchedBills] = useState([]);
   const [billPage, setBillPage] = useState(1);
   const [isScanning, setIsScanning] = useState(false);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const productsPerPage = 6;
   const billItemsPerPage = 5;
   const billsPerPage = 7;
 
-  useEffect(() => {
-    fetchProducts();
-    fetchBills();
-  }, []);
-
   const onScanSuccess = async (decodedText) => {
+    if (!quantity || !paymentMode) {
+      handleError("Please enter quantity and payment mode before scanning.");
+      setIsScanning(false);
+      return;
+    }
+
+    const ScannedBill = {
+      quantity: parseInt(quantity),
+      time: new Date().toLocaleTimeString(),
+      paymentMode: paymentMode || "cash",
+    };
+
     try {
       const response = await fetch(
         `http://localhost:8000/api/products/${decodedText}`,
@@ -43,6 +51,15 @@ const POSSystem = () => {
 
       if (!response.ok) {
         throw new Error("Product not found");
+      } else {
+        setSelectedProduct("");
+        setQuantity(1);
+        setPaymentMode("");
+        setIsScanning(false);
+
+        setInterval(() => {
+          setIsFormSubmitted(true);
+        }, 1000);
       }
 
       const product = await response.json();
@@ -71,6 +88,10 @@ const POSSystem = () => {
         const errorData = await billResponse.json();
         handleError(errorData.message);
         throw new Error(errorData.message);
+      } else {
+        setInterval(() => {
+          setIsFormSubmitted(true);
+        }, 1000);
       }
 
       setCurrentBill([newBillItem, ...currentBill]);
@@ -84,6 +105,11 @@ const POSSystem = () => {
       setQuantity(1);
       setPaymentMode("");
       setIsScanning(false);
+      handleSuccess("Product added successfully");
+
+      // Refresh bills list and statistical data
+      fetchBills();
+      setIsFormSubmitted(false);
     } catch (error) {
       console.error("Error fetching product:", error);
       handleError("Failed to find product with scanned QR code");
@@ -107,7 +133,6 @@ const POSSystem = () => {
 
       scanner.render(onScanSuccess, onScanError);
     }
-
     return () => {
       if (scanner) {
         scanner.clear();
@@ -116,6 +141,10 @@ const POSSystem = () => {
   }, [isScanning]);
 
   const toggleScanner = () => {
+    if (!quantity || !paymentMode) {
+      handleError("Please enter quantity and payment mode before scanning.");
+      return;
+    }
     setIsScanning(!isScanning);
   };
 
@@ -170,6 +199,8 @@ const POSSystem = () => {
         setSelectedProduct("");
         setQuantity(1);
         setPaymentMode("");
+        fetchBills();
+        setIsFormSubmitted(true);
       } catch (error) {
         console.log(error);
         console.error("Error saving bill:", error);
@@ -200,6 +231,15 @@ const POSSystem = () => {
       console.error("Error fetching bills:", error);
     }
   };
+
+  useEffect(
+    () => {
+      fetchProducts();
+      fetchBills();
+    },
+    isFormSubmitted,
+    []
+  );
 
   // Calculate pagination for products
   const totalPages = Math.ceil(products.length / productsPerPage);
@@ -235,7 +275,7 @@ const POSSystem = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 bg-gray-50">
-      <BillingStatistical />
+      <BillingStatistical isFormSubmitted={isFormSubmitted} />
 
       {/* Quick Bill Generation */}
       <div className="bg-white p-6 rounded-lg shadow-sm mb-8">

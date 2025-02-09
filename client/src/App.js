@@ -58,7 +58,6 @@ function App() {
 
         <Route path="/unauthorized" element={<Unauthorised />} />
         <Route path="*" element={<PageNotFound />} />
-        <Route path="/test" element={<QRCodeGenerator />} />
 
         <Route
           path="/"

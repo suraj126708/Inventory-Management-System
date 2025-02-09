@@ -1,6 +1,6 @@
 const { useState, useEffect } = require("react");
 
-function BillGeneration() {
+function BillGeneration({ isFormSubmitted }) {
   const [sales, setSales] = useState({
     cash: 0,
     online: 0,
@@ -12,6 +12,7 @@ function BillGeneration() {
     try {
       const response = await fetch("http://localhost:8000/api/sales/get-sales");
       const data = await response.json();
+      console.log(data);
       setSales({
         cash: data[0].cash,
         online: data[0].online,
@@ -25,7 +26,7 @@ function BillGeneration() {
 
   useEffect(() => {
     fetchSales();
-  }, []);
+  }, [isFormSubmitted]);
 
   return (
     <div>

@@ -5,26 +5,39 @@ import { QRCodeCanvas } from "qrcode.react";
 function ProductList({ products, formatDate, handleEdit, handleDelete }) {
   const qrRefs = useRef({});
 
-  const generateQRCodeImage = (product_id) => {
+  const generateQRCodeImage = (product_id, productName) => {
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
-    const size = 500;
 
-    canvas.width = size + 40;
-    canvas.height = size + 40;
+    const qrSize = 1000;
+    const padding = 100;
+    const totalSize = qrSize + padding * 2;
 
-    context.fillStyle = "#fff";
-    context.fillRect(0, 0, canvas.width, canvas.height);
+    canvas.width = totalSize;
+    canvas.height = totalSize;
+
+    // Fill white background
+    context.fillStyle = "#FFFFFF";
+    context.fillRect(0, 0, totalSize, totalSize);
 
     const qrCanvas = qrRefs.current[product_id]?.querySelector("canvas");
     if (qrCanvas) {
       const img = new Image();
       img.src = qrCanvas.toDataURL();
       img.onload = () => {
-        context.drawImage(img, 20, 20, size, size);
+        // Draw QR code with padding
+        context.drawImage(img, padding, padding, qrSize, qrSize);
+
+        // Add product information text
+        context.fillStyle = "#000000";
+        context.font = "bold 48px Arial";
+        context.textAlign = "center";
+        context.fillText(productName, totalSize / 2, totalSize - padding / 2);
+
+        // Create and trigger download
         const link = document.createElement("a");
         link.href = canvas.toDataURL("image/png");
-        link.download = `QR-${product_id}.png`;
+        link.download = `QR-${productName}-${product_id}.png`;
         link.click();
       };
     }
@@ -61,9 +74,9 @@ function ProductList({ products, formatDate, handleEdit, handleDelete }) {
                 <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Company
                 </th>
-                <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase">
+                {/* <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase">
                   QR Code
-                </th>
+                </th> */}
                 <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Expiry Date
                 </th>
@@ -103,10 +116,13 @@ function ProductList({ products, formatDate, handleEdit, handleDelete }) {
                     <td className="p-3">{product.company}</td>
                     <td className="p-3">
                       <div
-                        className=""
                         ref={(el) => (qrRefs.current[product.product_id] = el)}
                       >
-                        <QRCodeCanvas value={product.product_id} size={50} />
+                        <QRCodeCanvas
+                          value={product.product_id}
+                          size={50}
+                          level="H"
+                        />
                       </div>
                     </td>
                     <td className="p-3">{formatDate(product.expiryDate)}</td>
@@ -128,7 +144,10 @@ function ProductList({ products, formatDate, handleEdit, handleDelete }) {
                         </button>
                         <button
                           onClick={() =>
-                            generateQRCodeImage(product.product_id)
+                            generateQRCodeImage(
+                              product.product_id,
+                              product.name
+                            )
                           }
                           className="p-1 text-green-600 hover:text-green-800"
                           title="Download QR"

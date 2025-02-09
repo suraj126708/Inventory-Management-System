@@ -12,6 +12,7 @@ const productImages = require("../models/ProductFileUpload");
 // Product routes
 router.get("/", ensureAuthenticated, getAllProducts);
 router.get("/:id", ensureAuthenticated, getProductById);
+
 router.post(
   "/",
   ensureAuthenticated,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -28,7 +28,39 @@ import {
 } from "recharts";
 
 const AdminDashboard = () => {
-  // Sample data - replace with actual data from your backend
+  const [sales, setSales] = useState({
+    totalSales: 0,
+    totalOrders: 0,
+    totalProducts: 0,
+    averageOrdersPerDay: 0,
+    monthlySales: [],
+    topSellingProducts: [],
+    minAvailableStocks: [],
+  });
+
+  const fetchSales = async () => {
+    try {
+      const response = await fetch("http://localhost:8000/api/sales/get-sales");
+      const data = await response.json();
+      console.log(data[0].monthlySales);
+      setSales({
+        totalSales: data[0].total,
+        totalOrders: data[0].totalOrders,
+        totalProducts: data[0].totalProducts,
+        pendingPayment: data[0].pendingPayment,
+        monthlySales: data[0].monthlySales,
+        topSellingProducts: data[0].topSellingProducts,
+        minAvailableStocks: data[0].minAvailableStocks,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSales();
+  }, []);
+
   const salesData = [
     { month: "Jan", sales: 4000, profit: 2400, orders: 240 },
     { month: "Feb", sales: 3000, profit: 1398, orders: 200 },
@@ -97,20 +129,18 @@ const AdminDashboard = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {[
-            { name: "Product A", sales: 245, revenue: "$2,400" },
-            { name: "Product B", sales: 190, revenue: "$1,800" },
-            { name: "Product C", sales: 145, revenue: "$1,400" },
-          ].map((product, index) => (
+          {sales.topSellingProducts.map((product, index) => (
             <div
               key={index}
               className="flex items-center justify-between p-4 bg-gray-50 rounded-lg"
             >
               <div>
                 <p className="font-medium">{product.name}</p>
-                <p className="text-sm text-gray-600">{product.sales} sales</p>
+                <p className="text-sm text-gray-600">
+                  {product.totalSales} sales
+                </p>
               </div>
-              <p className="font-bold text-blue-600">{product.revenue}</p>
+              <p className="font-bold text-blue-600">{product.soldQuantity}</p>
             </div>
           ))}
         </div>
@@ -128,11 +158,7 @@ const AdminDashboard = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {[
-            { name: "Product X", stock: 5, threshold: 10 },
-            { name: "Product Y", stock: 3, threshold: 8 },
-            { name: "Product Z", stock: 2, threshold: 5 },
-          ].map((item, index) => (
+          {sales.minAvailableStocks.map((item, index) => (
             <div
               key={index}
               className="flex items-center justify-between p-4 bg-yellow-50 rounded-lg"
@@ -140,11 +166,11 @@ const AdminDashboard = () => {
               <div>
                 <p className="font-medium">{item.name}</p>
                 <p className="text-sm text-gray-600">
-                  Current stock: {item.stock}
+                  Current stock: {item.availableStock}
                 </p>
               </div>
               <p className="text-sm text-yellow-600">
-                Threshold: {item.threshold}
+                Threshold: {item.quantity}
               </p>
             </div>
           ))}
@@ -161,28 +187,28 @@ const AdminDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <StatCard
           title="Total Sales"
-          value="$12,426"
+          value={sales.totalSales}
           trend="up"
           trendValue="12"
           icon={DollarSign}
         />
         <StatCard
           title="Total Orders"
-          value="1,200"
+          value={sales.totalOrders}
           trend="up"
           trendValue="8"
           icon={ShoppingCart}
         />
         <StatCard
           title="Total Products"
-          value="500"
+          value={sales.totalProducts}
           trend="up"
           trendValue="5"
           icon={Package}
         />
         <StatCard
-          title="Total Customers"
-          value="842"
+          title="Pending Payments"
+          value={sales.pendingPayment}
           trend="down"
           trendValue="3"
           icon={Users}
