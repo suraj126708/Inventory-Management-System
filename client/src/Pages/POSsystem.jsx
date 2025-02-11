@@ -149,7 +149,7 @@ const POSSystem = () => {
   };
 
   const fetchProducts = () => {
-    fetch(https://inventory-management-system-d859.onrender.com
+    fetch(
       "https://inventory-management-system-d859.onrender.com/api/products",
       {
         headers: {
@@ -176,7 +176,7 @@ const POSSystem = () => {
 
       try {
         const response = await fetch(
-          "https://inventory-management-system-d859.onrender.com/api/bills/save-bill",
+          "http://localhost:8000/api/bills/save-bill",
           {
             method: "POST",
             headers: {
@@ -218,7 +218,7 @@ const POSSystem = () => {
   const fetchBills = async () => {
     try {
       const response = await fetch(
-        "https://inventory-management-system-d859.onrender.com/api/bills/get-bills",
+        "http://localhost:8000/api/bills/get-bills",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
