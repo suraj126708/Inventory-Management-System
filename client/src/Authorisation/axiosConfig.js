@@ -2,7 +2,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom"; // Assuming you're using react-router
 
 const axiosInstance = axios.create({
-  baseURL: "https://localhost:8000",
+  baseURL: "https://inventory-management-system-d859.onrender.com",
 });
 
 axiosInstance.interceptors.request.use((config) => {
