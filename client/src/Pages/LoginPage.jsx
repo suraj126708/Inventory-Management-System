@@ -27,7 +27,8 @@ const LoginPage = () => {
     setErrors(null);
 
     try {
-      const url = "http://localhost:8000/api/auth/login";
+      const url =
+        "https://inventory-management-system-d859.onrender.com/api/auth/login";
       const response = await fetch(url, {
         method: "POST",
         headers: {

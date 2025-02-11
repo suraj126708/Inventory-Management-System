@@ -27,11 +27,14 @@ const AddingProducts = () => {
   }, []);
 
   const fetchProducts = () => {
-    fetch("http://localhost:8000/api/products", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
+    fetch(
+      "https://inventory-management-system-d859.onrender.com/api/products",
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
       .then((response) => response.json())
       .then((data) => setProducts(data))
       .catch((error) => console.error("Error fetching products:", error));
@@ -106,8 +109,8 @@ const AddingProducts = () => {
     };
 
     const url = isEditing
-      ? `http://localhost:8000/api/products/${editingId}`
-      : "http://localhost:8000/api/products/";
+      ? `https://inventory-management-system-d859.onrender.com/api/products/${editingId}`
+      : "https://inventory-management-system-d859.onrender.com/api/products/";
 
     fetch(url, requestOptions)
       .then((response) => {
@@ -153,12 +156,15 @@ const AddingProducts = () => {
 
   const handleDelete = (productId) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
-      fetch(`http://localhost:8000/api/products/${productId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
+      fetch(
+        `https://inventory-management-system-d859.onrender.com/api/products/${productId}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
         .then(() => {
           setProducts(
             products.filter((product) => product.product_id !== productId)
@@ -178,7 +184,7 @@ const AddingProducts = () => {
   // const fetchBills = async () => {
   //   try {
   //     const response = await fetch(
-  //       "http://localhost:8000/api/bills/get-bills",
+  //       "https://inventory-management-system-d859.onrender.com/api/bills/get-bills",
   //       {
   //         headers: {
   //           Authorization: `Bearer ${localStorage.getItem("token")}`,

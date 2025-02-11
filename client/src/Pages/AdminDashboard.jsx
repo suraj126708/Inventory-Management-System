@@ -40,7 +40,9 @@ const AdminDashboard = () => {
 
   const fetchSales = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/sales/get-sales");
+      const response = await fetch(
+        "https://inventory-management-system-d859.onrender.com/api/sales/get-sales"
+      );
       const data = await response.json();
       console.log(data[0].monthlySales);
       setSales({

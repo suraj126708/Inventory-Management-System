@@ -155,7 +155,7 @@ const RegisterPage = () => {
         console.log("Form data to send:", formDataToSend);
 
         const response = await axios.post(
-          "http://localhost:8000/api/auth/register",
+          "https://inventory-management-system-d859.onrender.com/api/auth/register",
           formDataToSend,
           {
             headers: {

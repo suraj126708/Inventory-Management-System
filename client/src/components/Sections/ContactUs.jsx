@@ -20,7 +20,7 @@ const ContactUs = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/contact",
+        "https://inventory-management-system-d859.onrender.com/api/contact",
         formData
       );
       console.log("Message sent:", response.data);
