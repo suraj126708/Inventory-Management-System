@@ -74,7 +74,7 @@ const LoginPage = () => {
       <div className="min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-16 rounded-lg shadow-lg max-w-md w-full">
           <h2 className="text-3xl font-bold text-gray-800 text-center mb-4">
-            Gym Login
+            Login
           </h2>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>

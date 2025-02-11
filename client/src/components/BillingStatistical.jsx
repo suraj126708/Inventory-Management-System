@@ -43,7 +43,7 @@ function BillGeneration({ isFormSubmitted }) {
           <h3 className="text-lg font-semibold mb-2">Udari Sales</h3>
           <p className="text-2xl font-bold text-blue-600">${sales.udari}</p>
         </div>
-        <div className="p-6 bg-gradient-to-r white to bg-green-200 rounded-lg shadow-sm">
+        <div className="p-6 bg-gradient-to-r white to bg-yellow-100 rounded-lg shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Total Sales</h3>
           <p className="text-2xl font-bold text-blue-600">${sales.Total}</p>
         </div>

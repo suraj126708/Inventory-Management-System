@@ -12,6 +12,7 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.21.0",
     "express-session": "^1.18.0",
+    "framer-motion": "^12.4.1",
     "gsap": "^3.12.5",
     "html5-qrcode": "^2.3.8",
     "jquery": "^3.7.1",

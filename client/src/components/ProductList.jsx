@@ -74,9 +74,9 @@ function ProductList({ products, formatDate, handleEdit, handleDelete }) {
                 <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Company
                 </th>
-                {/* <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase">
+                <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase">
                   QR Code
-                </th> */}
+                </th>
                 <th className="p-3 text-left text-xs font-medium text-gray-500 uppercase">
                   Expiry Date
                 </th>

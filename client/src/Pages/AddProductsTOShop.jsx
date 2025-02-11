@@ -175,22 +175,22 @@ const AddingProducts = () => {
     setEditingId(null);
   };
 
-  const fetchBills = async () => {
-    try {
-      const response = await fetch(
-        "http://localhost:8000/api/bills/get-bills",
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = await response.json();
-      console.log("Fetched Bills:", data);
-    } catch (error) {
-      console.error("Error fetching bills:", error);
-    }
-  };
+  // const fetchBills = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "http://localhost:8000/api/bills/get-bills",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //         },
+  //       }
+  //     );
+  //     const data = await response.json();
+  //     console.log("Fetched Bills:", data);
+  //   } catch (error) {
+  //     console.error("Error fetching bills:", error);
+  //   }
+  // };
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -198,7 +198,7 @@ const AddingProducts = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 bg-gray-50 min-h-screen">
+    <div className="max-w-7xl mx-auto p-4 mt-20 bg-gray-100 min-h-screen">
       {/* Shop Header */}
       <div className="text-center mb-8 bg-white rounded-lg shadow-sm p-6">
         <h1 className="text-3xl font-bold text-gray-800">
@@ -219,7 +219,7 @@ const AddingProducts = () => {
               resetForm();
             }
           }}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
+          className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 flex items-center gap-2"
         >
           {showForm ? (
             <>
@@ -327,7 +327,7 @@ const AddingProducts = () => {
                   value={formData.expiryDate}
                   onChange={handleInputChange}
                   required
-                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-blue-500"
+                  className="w-full p-2 border rounded-md focus:ring-2 focus:ring-yellow-500"
                 />
               </div>
 

@@ -11,10 +11,13 @@ import AddingProducts from "./Pages/AddProductsTOShop";
 import QRCodeGenerator from "./components/QrCodeGenerator";
 import PageNotFound from "./components/PageNotFound";
 import { ToastContainer } from "react-toastify";
+import Navbar from "./components/NavBar";
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <>
+      <Navbar />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
@@ -50,7 +53,7 @@ function App() {
         <Route
           path="/employee-dashboard"
           element={
-            <ProtectedRoute allowedRoles={["employee"]}>
+            <ProtectedRoute allowedRoles={["employee", "admin"]}>
               <EmployeeDashboard />
             </ProtectedRoute>
           }
@@ -68,6 +71,7 @@ function App() {
           }
         />
       </Routes>
+      <Footer />
       <ToastContainer />
     </>
   );

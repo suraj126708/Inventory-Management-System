@@ -196,6 +196,10 @@ const POSSystem = () => {
             prev[paymentMode || "cash"] + newBillItem.total,
         }));
 
+        if (response.ok) {
+          handleSuccess("Product added successfully");
+        }
+
         setSelectedProduct("");
         setQuantity(1);
         setPaymentMode("");
@@ -250,15 +254,6 @@ const POSSystem = () => {
     indexOfLastProduct
   );
 
-  // Calculate pagination for bill
-  const totalBillPages = Math.ceil(currentBill.length / billItemsPerPage);
-  const indexOfLastBillItem = currentBillPage * billItemsPerPage;
-  const indexOfFirstBillItem = indexOfLastBillItem - billItemsPerPage;
-  const currentBillItems = currentBill.slice(
-    indexOfFirstBillItem,
-    indexOfLastBillItem
-  );
-
   // Calculate pagination for fetched bills
   const totalFetchedBillPages = Math.ceil(fetchedBills.length / billsPerPage);
   const indexOfLastFetchedBill = billPage * billsPerPage;
@@ -274,7 +269,7 @@ const POSSystem = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 bg-gray-50">
+    <div className="max-w-7xl mx-auto mt-20 p-4 bg-gray-100">
       <BillingStatistical isFormSubmitted={isFormSubmitted} />
 
       {/* Quick Bill Generation */}
@@ -299,7 +294,7 @@ const POSSystem = () => {
             <select
               value={selectedProduct}
               onChange={(e) => setSelectedProduct(e.target.value)}
-              className="flex-2 p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-2 p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
             >
               <option value="">Select Product</option>
               {products.map((product) => (
@@ -313,12 +308,12 @@ const POSSystem = () => {
               min="1"
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
-              className="flex-1 p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
             />
             <select
               value={paymentMode}
               onChange={(e) => setPaymentMode(e.target.value)}
-              className="flex-1 p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="flex-1 p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
             >
               <option value="">Payment Mode</option>
               <option value="cash">Cash</option>
@@ -327,14 +322,14 @@ const POSSystem = () => {
             </select>
             <button
               onClick={addToBill}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
+              className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 flex items-center gap-2"
             >
               <Plus size={16} />
               Add
             </button>
             <button
               onClick={toggleScanner}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center gap-2"
+              className="bg-yellow-600 text-white px-4 py-2 rounded-md hover:bg-yellow-700 flex items-center gap-2"
             >
               <QrCode size={16} />
               Scan QR

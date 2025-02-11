@@ -180,7 +180,7 @@ const AdminDashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen bg-white p-6 mt-20">
       <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
 
       {/* Stats Grid */}
@@ -297,7 +297,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Bottom Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 ">
         <TopProducts />
         <LowStockAlert />
       </div>
