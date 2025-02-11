@@ -99,7 +99,7 @@ function ProductList({ products, formatDate, handleEdit, handleDelete }) {
                       <img
                         src={
                           typeof product.image === "string"
-                            ? `http://localhost:8000/ProductImages/${product.image
+                            ? `https://inventory-management-system-d859.onrender.com/ProductImages/${product.image
                                 .split("\\")
                                 .pop()}`
                             : null
