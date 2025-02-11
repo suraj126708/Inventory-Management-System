@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const response = await axios.get(
-            "http://localhost:8000/api/auth/verify",
+            "https://inventory-management-system-d859.onrender.com/api/auth/verify",
             {
               headers: { Authorization: `Bearer ${token}` },
             }
