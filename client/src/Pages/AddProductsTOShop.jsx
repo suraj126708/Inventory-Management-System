@@ -106,8 +106,8 @@ const AddingProducts = () => {
     };
 
     const url = isEditing
-      ? `http://localhost:8000/api/products/${editingId}`
-      : "http://localhost:8000/api/products/";
+      ? `https://inventory-management-system-d859.onrender.com/api/products/${editingId}`
+      : "https://inventory-management-system-d859.onrender.com/api/products/";
 
     fetch(url, requestOptions)
       .then((response) => {
@@ -174,23 +174,6 @@ const AddingProducts = () => {
     setIsEditing(false);
     setEditingId(null);
   };
-
-  // const fetchBills = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       "http://localhost:8000/api/bills/get-bills",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //         },
-  //       }
-  //     );
-  //     const data = await response.json();
-  //     console.log("Fetched Bills:", data);
-  //   } catch (error) {
-  //     console.error("Error fetching bills:", error);
-  //   }
-  // };
 
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "long", day: "numeric" };
